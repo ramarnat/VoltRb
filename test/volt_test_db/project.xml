@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project>
+    <database name='database'>
+       <schemas>
+           <schema path='test_db.sql' />
+       </schemas>
+       <procedures>
+           <procedure class='InsertTinyint'  />
+           <procedure class='SelectTinyint'  />
+           <procedure class='InsertSmallint'  />
+           <procedure class='SelectSmallint'  />
+           <procedure class='InsertInteger'  />
+           <procedure class='SelectInteger'  />
+           <procedure class='InsertBigint'  />
+           <procedure class='SelectBigint'  />
+           <procedure class='InsertFloat'  />
+           <procedure class='SelectFloat'  />
+           <procedure class='InsertDecimal'  />
+           <procedure class='SelectDecimal'  />
+           <procedure class='InsertString'  />
+           <procedure class='SelectString'  />
+           <procedure class='InsertTimestamp'  />
+           <procedure class='SelectTimestamp'  />
+       </procedures>
+       <partitions>
+           <partition table='T_TINYINT' column='RID' />
+           <partition table='T_SMALLINT' column='RID' />
+           <partition table='T_INTEGER' column='RID' />
+           <partition table='T_BIGINT' column='RID' />
+           <partition table='T_FLOAT' column='RID' />
+           <partition table='T_DECIMAL' column='RID' />
+           <partition table='T_STRING' column='RID' />
+           <partition table='T_TIMESTAMP' column='RID' />
+       </partitions>
+    </database>
+</project>

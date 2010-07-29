@@ -1,0 +1,156 @@
+= VoltRb: A gem client for VoltDB
+
+VoltRB is a gem client for VoltDB that uses the JSON interface.
+
+= Installing VoltRb
+
+Get from RubyForge.
+
+  $ gem install voltrb
+
+= Example
+
+  This is the Ruby version of VoltDB's hello world example.
+
+  require 'voltrb'
+
+  # Create a client and connect to the VoltDB instance running in the same machine.
+  client = VoltRb::Client.new
+
+  # Insert "Hello, World" for different languages.
+  client.call_procedure("Insert", "Hello", "World", "English")
+  client.call_procedure("Insert", "Bonjour", "Monde", "French")
+  client.call_procedure("Insert", "Hola", "Mundo", "Spanish")
+  client.call_procedure("Insert", "Hej", "Verden", "Danish")
+  client.call_procedure("Insert", "Ciao", "Mondo", "Italian")
+
+  # Say it in Spanish!
+  response = client.call_procedure("Select", "Spanish")
+  puts "#{response.results[0].first[:HELLO]}, #{response.results[0].first[:WORLD]}!"
+
+= Usage
+
+== Initialization
+
+Initializing a client without passing any arguments will have it connect to the VoltDB instance running in localhost.
+
+  client = VoltRb::Client.new
+
+Or we can specify options as a hash.
+
+  client = VoltRb::Client.new({:host => "voltdbhost", :port => 8888})
+
+Right now, VoltRb only knows two:
+
+* host - should point to the name or IP address of the VoltDB instance.
+* port - in case the instance isn't listening on the default port (8080).
+
+There are no options yet for authentication since the JSON interface doesn't implement any. See Notes for more.
+
+== Stored Procedure Invocation
+
+We call VoltDB stored procedures using Client#call_procedure. The first argument is the name of the procedure followed by its parameters if any.
+
+  client.call_procedure(:Insert, "Hello", "World", "English")
+
+Ruby types are automatically mapped to VoltDB types as below:
+
+Ruby::    VoltDB 
+Fixnum, Bignum::  Tiny, Small, Integer, Long
+Float::   Float, Double
+BigDecimal:: Decimal
+Time, Date, DateTime::  Timestamp
+String::  String
+
+Nils become Nulls. 
+
+== Stored Procedure Response
+
+VoltDB stored procedures can return multiple rowsets (VoltTable objects). This array of rowsets is returned by ProcedureResponse#results. In the hello world example, the Select procedure returns only one so:
+
+  response = client.call_procedure("Select", "Spanish")
+  response.results[0]
+  => #<VoltRb::VoltTable:0x17952c4 @raw={"status"=>-128, "schema"=>[{"name"=>"HELLO", "type"=>9}, 
+  {"name"=>"WORLD", "type"=>9}], "data"=>[["Hola", "Mundo"]]}>
+
+Each VoltTable / rowset implements Enumerable so we can access the rows using the usual methods #each, #all, #first, #last.
+
+  response.results[0].each { |row| puts row }
+
+Each row is a hash with keys that are symbolized column names.
+
+  response.results[0].each { |row| puts "#{row[:HELLO]}, #{row[:WORLD]}" }
+  Hola, Mundo
+  => [["Hola", "Mundo"]]
+
+You can get the list of columns by looking at the array returned by VoltTable#schema.
+
+  response.results[0].schema
+  => [#<struct VoltRb::VoltColumn name=:HELLO, type=9>, #<struct VoltRb::VoltColumn name=:WORLD, type=9>]
+
+== Catching Errors
+
+Standard Ruby errors will be raised in case of network connection problems. VoltDB-specific errors like invalid procedure arguments and constraint violations will raise VoltRb::VoltError. We can find out more by inspecting #status_string or #app_status_string.
+
+  begin
+    client.call_procedure("Insert", "Hello", "World", "English")
+    # This second call will cause a unique constraint violation.
+    client.call_procedure("Insert", "Hello", "World", "English")
+  rescue VoltRb::VoltError => bang
+    puts "Error: #{bang.status_string}"
+  end    
+
+  Error: 
+  ========================================================
+  VOLTDB ERROR: CONSTRAINT VIOLATION
+    Attempted violation of constraint
+  Constraint Type UNIQUE, Table CatalogId HELLOWORLD
+   header size: 35
+   status code: -128 column count: 3
+   cols (HELLO:STRING), (WORLD:STRING), (DIALECT:STRING), 
+   rows -
+    Hello, World, English, 
+  
+      at Insert.run(Insert.java:19)
+  ========================================================
+ 
+= Notes
+
+== User Authentication
+
+As of VoltDB v1.1, the JSON interface does not implement any form of authentication. 
+
+The following text was taken from VoltDB's JSON documentation:
+
+<em>Note that there is currently no way to authenticate the client interface using JSON. In other words, the JSON interface operates as an "anonymous" client. If security is enabled for the database, use of the JSON interface is essentially disabled because any attempt to execute a stored procedure will result in a protection violation.</em>
+
+This forum thread says they expect to have the feature in v1.2
+
+http://community.voltdb.com/node/241
+
+== Unicode Strings
+
+As of v1.1 VoltDB's JSON interface does not properly return UTF-8 strings so non-Latin characters don't display correctly.
+
+http://community.voltdb.com/node/263
+
+= License
+
+This gem has been released under the MIT License[link:files/MIT-LICENSE.html].
+
+= Warranty
+
+This software is provided "as is" and without any express or
+implied warranties, including, without limitation, the implied
+warranties of merchantibility and fitness for a particular
+purpose.
+
+== Contributing
+
+The source code is hosted on http://github.com/beljun/voltrb.
+
+== Credits
+
+Author: Junjun Olympia (@beljun) / http://rubyredtomatoes.com
+
+
