@@ -4,3 +4,6 @@ tmp
 pkg
 *.gem
 rdoc
+*.class
+*.jar
+test/volt_test_db/debugoutput

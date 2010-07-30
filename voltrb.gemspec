@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = "romeo.olympia@gmail.com"
   s.homepage    = "http://github.com/beljun/voltrb"
   s.summary     = "VoltRb is a gem client for VoltDB."
-  s.description = "VoltRb is a gem client for VoltDB that uses it's JSON interface. Works with VoltDB v1.1 onwards."
+  s.description = "VoltRb is a gem client for VoltDB. This early release uses the JSON interface and works with VoltDB v1.1 onwards."
 
   s.rubyforge_project = "voltrb"
 
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rspec"
 
-  s.files        = Dir.glob("{lib}/**/*") + %w(README MIT-LICENSE CHANGELOG)
+  s.files        = Dir.glob("{lib}/**/*") + %w(README.rdoc MIT-LICENSE CHANGELOG)
   s.require_path = 'lib'
 end
 
