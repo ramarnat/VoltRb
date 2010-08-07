@@ -54,7 +54,7 @@ Rake::RDocTask.new do |t|
   t.title    = "VoltRb: A gem client for VoltDB"
   t.options << '--line-numbers' << '--inline-source' << '-A cattr_accessor=object'
   t.options << '--charset' << 'utf-8'
-  t.rdoc_files.include('README', 'MIT-LICENSE', 'lib/**/*.rb')
+  t.rdoc_files.include('README.rdoc', 'MIT-LICENSE', 'lib/**/*.rb')
 end
 
 # == Gem Management

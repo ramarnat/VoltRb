@@ -134,6 +134,10 @@ As of v1.1 VoltDB's JSON interface does not properly return UTF-8 strings so non
 
 http://community.voltdb.com/node/263
 
+The fix is now in their trunk version. It'll be included in the next official release of VoltDB (v1.2). Or you can build directly from trunk.
+
+  svn checkout http://svnmirror.voltdb.com/eng/trunk/
+
 = License
 
 This gem has been released under the MIT License[link:files/MIT-LICENSE.html].

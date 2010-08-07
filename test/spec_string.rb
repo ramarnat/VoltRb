@@ -1,3 +1,6 @@
+# coding: utf-8
+# Above line/comment is Needed for Ruby 1.9 above.
+
 $:.unshift File.dirname(__FILE__)
 require 'helpers'
 

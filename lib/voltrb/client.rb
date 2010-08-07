@@ -98,8 +98,9 @@ module VoltRb
       case val
         when BigDecimal then val.to_s('F')
         when Time then val.to_i * 1000
-        when Date then Time.parse(val.to_s).to_i * 1000
-        when DateTime then Time.parse(val.to_s).to_i * 1000
+        # Note: case DateTime MUST come before Date because Ruby seems to think DateTime is a Date. But Date is not a DateTime. Ruby bug?
+        when DateTime then Time.parse(val.strftime("%a %b %d %H:%M:%S %z %Y")).to_i * 1000
+        when Date then Time.parse(val.strftime("%b %d %Y")).to_i * 1000
         else val
       end
     end

@@ -101,7 +101,7 @@ describe "A Volt BigInt" do
   end
 
   it "should handle the maximum value that's allowed." do
-    test_echo(@client, :Bigint, 2, 9223372036854775807).should be_true
+    test_echo(@client, :Bigint, 3, 9223372036854775807).should be_true
   end
 
   it "should reject out-of-range values." do

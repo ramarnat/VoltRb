@@ -3,7 +3,7 @@ require 'bigdecimal'
 module VoltRb
   # Set of utility functions.
   module Utils
-    # Converts a strign to a Big Decimal.
+    # Converts a string to a Big Decimal.
     def dec_from_str(str)
       BigDecimal.new(str)
     end

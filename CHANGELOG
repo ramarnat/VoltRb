@@ -1,5 +1,8 @@
 = Change log
 
 == 0.0.1
-Initial release.
+* Initial release.
 
+== 0.0.2
+* Updated the README about the Unicode string issue. The trunk version now has this fixed.
+* More robust handling of different date & time types.
