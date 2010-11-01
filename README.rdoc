@@ -40,12 +40,12 @@ Or we can specify options as a hash.
 
   client = VoltRb::Client.new({:host => "voltdbhost", :port => 8888})
 
-Right now, VoltRb only knows two:
+The following options are recognized:
 
 * host - should point to the name or IP address of the VoltDB instance.
 * port - in case the instance isn't listening on the default port (8080).
-
-There are no options yet for authentication since the JSON interface doesn't implement any. See Notes for more.
+* username
+* password
 
 == Stored Procedure Invocation
 
@@ -113,30 +113,6 @@ Standard Ruby errors will be raised in case of network connection problems. Volt
   
       at Insert.run(Insert.java:19)
   ========================================================
- 
-= Notes
-
-== User Authentication
-
-As of VoltDB v1.1, the JSON interface does not implement any form of authentication. 
-
-The following text was taken from VoltDB's JSON documentation:
-
-<em>Note that there is currently no way to authenticate the client interface using JSON. In other words, the JSON interface operates as an "anonymous" client. If security is enabled for the database, use of the JSON interface is essentially disabled because any attempt to execute a stored procedure will result in a protection violation.</em>
-
-This forum thread says they expect to have the feature in v1.2
-
-http://community.voltdb.com/node/241
-
-== Unicode Strings
-
-As of v1.1 VoltDB's JSON interface does not properly return UTF-8 strings so non-Latin characters don't display correctly.
-
-http://community.voltdb.com/node/263
-
-The fix is now in their trunk version. It'll be included in the next official release of VoltDB (v1.2). Or you can build directly from trunk.
-
-  svn checkout http://svnmirror.voltdb.com/eng/trunk/
 
 = License
 

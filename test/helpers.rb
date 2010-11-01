@@ -4,7 +4,7 @@ require 'voltrb'
 
 module VoltRbSpecHelpers
   def create_client
-    VoltRb::Client.new
+    VoltRb::Client.new(:username => "foo", :password => "bar")
   end
 
   def test_echo(client, table_name, rid, value)

@@ -3,6 +3,7 @@ require 'rest_client'
 require 'date'
 require 'time'
 require 'bigdecimal'
+require 'digest/sha1'
 
 module VoltRb
   # This is the main class we use to interact with the VoltDB instance.
@@ -48,7 +49,7 @@ module VoltRb
   # We can find the details of the error by inspecting status_string or app_status_string.
   # See VoltError for more.
   class Client
-    attr_reader :host, :port
+    attr_reader :host, :port, :username
     attr_accessor :api_root
 
     # Calling new without any arguments will create a client and have it connect to the VoltDB instance running 
@@ -56,16 +57,17 @@ module VoltRb
     # Pass an options hash to modify these defaults. 
     #   client = VoltRb::Client.new({:host => "voltdb_server", :port => 8888})
     #
-    # Right now, only two options are recognized:
+    # The following options are recognized:
     # * host - the machine name or IP address
     # * port - other than the default
+    # * username 
+    # * password
     #
-    # <em>Note on user authentication:</em>
-    # As of v1.1, the VoltDB JSON interface does not implement any form of authentication. 
-    # See the README[link:files/README.html] for more.
     def initialize(options = {})
       @host = options[:host] || "localhost"
       @port = options[:port] || 8080
+      @username= options[:username]
+      @hashed_password = Digest::SHA1.hexdigest(options[:password]) if options[:password]
       @api_root = "http://#{@host}:#{@port}/api/1.0/"
     end
 
@@ -87,11 +89,19 @@ module VoltRb
     # In case of errors, handle the usual Ruby errors and the VoltDB-specfic VoltError (this inherits from StandardError).
     def call_procedure(procedure_name, *args)
       params = args.inject([]) { |o,e| o << prep_param(e); o }
-      response = RestClient.post(@api_root, :Procedure => procedure_name.to_s, :Parameters => params.to_json, :content_type => "text/plain; charset=UTF-8", :accept => :json)
+      payload = {:Procedure => procedure_name.to_s, :Parameters => params.to_json}
+      if @username
+        payload[:User] = @username
+        payload[:Hashedpassword] = @hashed_password
+      end 
+      response = RestClient.post(@api_root, payload, :content_type => "text/plain; charset=UTF-8", :accept => :json)
       proc_resp = ProcedureResponse.new(response)
       raise(VoltError.new(proc_resp.status, proc_resp.status_string, proc_resp.app_status, proc_resp.app_status_string), "A VoltDB procedure error occurred. See the exception object for details.") if proc_resp.raw["status"] != 1 or proc_resp.raw["appstatus"] != -128
       proc_resp
     end
+
+    # Alias for call_procedure.  Term used in other client libraries.
+    alias :invoke :call_procedure
 
   private
     def prep_param(val)

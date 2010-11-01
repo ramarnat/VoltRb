@@ -1,27 +1,32 @@
 <?xml version="1.0"?>
 <project>
+    <security enabled="true" />
     <database name='database'>
+       <groups>
+           <group name="dbuser" />
+           <group name="administrator" sysproc="true" adhoc="true" />
+       </groups>
        <schemas>
            <schema path='test_db.sql' />
        </schemas>
        <procedures>
-           <procedure class='InsertTinyint'  />
-           <procedure class='SelectTinyint'  />
-           <procedure class='InsertSmallint'  />
-           <procedure class='SelectSmallint'  />
-           <procedure class='InsertInteger'  />
-           <procedure class='SelectInteger'  />
-           <procedure class='SelectIntegerMulti'  />
-           <procedure class='InsertBigint'  />
-           <procedure class='SelectBigint'  />
-           <procedure class='InsertFloat'  />
-           <procedure class='SelectFloat'  />
-           <procedure class='InsertDecimal'  />
-           <procedure class='SelectDecimal'  />
-           <procedure class='InsertString'  />
-           <procedure class='SelectString'  />
-           <procedure class='InsertTimestamp'  />
-           <procedure class='SelectTimestamp'  />
+           <procedure class='InsertTinyint'  groups="dbuser" />
+           <procedure class='SelectTinyint'  groups="dbuser" />
+           <procedure class='InsertSmallint'  groups="dbuser" />
+           <procedure class='SelectSmallint'  groups="dbuser" />
+           <procedure class='InsertInteger'  groups="dbuser" />
+           <procedure class='SelectInteger'  groups="dbuser" />
+           <procedure class='SelectIntegerMulti'  groups="dbuser" />
+           <procedure class='InsertBigint'  groups="dbuser" />
+           <procedure class='SelectBigint'  groups="dbuser" />
+           <procedure class='InsertFloat'  groups="dbuser" />
+           <procedure class='SelectFloat'  groups="dbuser" />
+           <procedure class='InsertDecimal'  groups="dbuser" />
+           <procedure class='SelectDecimal'  groups="dbuser" />
+           <procedure class='InsertString'  groups="dbuser" />
+           <procedure class='SelectString'  groups="dbuser" />
+           <procedure class='InsertTimestamp'  groups="dbuser" />
+           <procedure class='SelectTimestamp'  groups="dbuser" />
        </procedures>
        <partitions>
            <partition table='T_TINYINT' column='RID' />
