@@ -4,7 +4,7 @@ VoltRB is a gem client for VoltDB that uses the JSON interface.
 
 = Installing VoltRb
 
-Get from RubyForge.
+Get from RubyGems.org:
 
   % gem install voltrb
 

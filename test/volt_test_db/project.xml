@@ -11,6 +11,7 @@
            <procedure class='SelectSmallint'  />
            <procedure class='InsertInteger'  />
            <procedure class='SelectInteger'  />
+           <procedure class='SelectIntegerMulti'  />
            <procedure class='InsertBigint'  />
            <procedure class='SelectBigint'  />
            <procedure class='InsertFloat'  />

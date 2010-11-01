@@ -9,4 +9,5 @@ require 'voltrb/exceptions'
 require 'voltrb/volt_table'
 require 'voltrb/procedure_response'
 require 'voltrb/client'
+require 'voltrb/version'
 

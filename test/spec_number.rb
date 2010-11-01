@@ -83,6 +83,10 @@ describe "A Volt Integer" do
   it "should handle NULLs." do
     test_echo(@client, :Integer, 21, nil).should be_true
   end
+
+  it "should return multiple rows properly" do
+    @client.call_procedure("SelectIntegerMulti").results[0].to_a.size.should be_equal(5)
+  end
 end
 
 describe "A Volt BigInt" do
