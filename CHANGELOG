@@ -6,3 +6,7 @@
 == 0.0.2
 * Updated the README about the Unicode string issue. The trunk version now has this fixed.
 * More robust handling of different date & time types.
+
+== 0.1.0
+* Client now accepts username/password to authorize connection with VoltDB servers (>= v1.2)
+
