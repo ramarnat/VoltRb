@@ -10,7 +10,7 @@ module VoltRb
 
     # Converts an integer (millisecond value since epoch) to a Time object.
     def time_from_milli_epoch(num)
-      Time.at(num/1000)
+      Time.at(num/1000.0)
     end
 
     # Converts a val of type into its Ruby equivalent.
